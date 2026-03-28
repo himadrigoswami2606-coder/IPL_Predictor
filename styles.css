@@ -291,6 +291,30 @@ button {
   color: #151515;
 }
 
+body[data-section="table"] .main-column {
+  display: none;
+}
+
+body[data-section="table"] .sidebar {
+  grid-column: 1 / -1;
+}
+
+body[data-section="table"] .odds-card {
+  display: none;
+}
+
+body[data-section="playoffs"] .main-column {
+  display: none;
+}
+
+body[data-section="playoffs"] .sidebar {
+  grid-column: 1 / -1;
+}
+
+body[data-section="playoffs"] .sidebar > :not(.odds-card) {
+  display: none;
+}
+
 .workspace {
   display: grid;
   grid-template-columns: minmax(0, 1.55fr) minmax(320px, 0.95fr);

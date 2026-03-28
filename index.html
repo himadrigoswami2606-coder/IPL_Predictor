@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>IPLPredictor</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body data-theme="dark">
+    <div class="ambient-blur ambient-blur--left"></div>
+    <div class="ambient-blur ambient-blur--right"></div>
+
+    <div class="app-shell">
+      <header class="topbar glass-panel">
+        <div class="brand-block">
+          <div class="brand-mark" aria-hidden="true">
+            <span></span>
+          </div>
+          <div>
+            <p class="eyebrow">IPLPredictor</p>
+            <h1>IPL 2026 Predictor</h1>
+          </div>
+        </div>
+
+        <nav class="league-nav" aria-label="Leagues">
+          <button class="league-pill league-pill--active" type="button">
+            Indian Premier League
+          </button>
+        </nav>
+
+        <div class="header-actions">
+          <span class="status-pill" id="topPredictionStatus">0/10 matches predicted</span>
+          <button class="ghost-button theme-toggle" id="themeToggle" type="button" aria-label="Toggle theme">
+            <span class="theme-toggle__icon" aria-hidden="true">&#9728;</span>
+          </button>
+          <button class="ghost-button" id="resetButton" type="button">Reset</button>
+        </div>
+      </header>
+
+      <div class="stage-tabs glass-panel" aria-label="Sections">
+        <button class="stage-tab stage-tab--active" type="button">League Stage</button>
+        <button class="stage-tab" type="button">Playoffs</button>
+        <button class="stage-tab" type="button">Points Table</button>
+      </div>
+
+      <main class="workspace">
+        <section class="main-column">
+          <div class="toolbar">
+            <div class="segment-group" role="tablist" aria-label="Match filters">
+              <button class="segment is-active" data-filter="all" type="button">All</button>
+              <button class="segment" data-filter="completed" type="button">Completed</button>
+              <button class="segment" data-filter="upcoming" type="button">Upcoming</button>
+            </div>
+
+            <div class="toolbar-actions">
+              <button class="simulate-button" id="simulateButton" type="button">
+                Simulate Remaining
+              </button>
+              <p class="toolbar-note" id="predictionStatus">
+                Pick winners to update standings, live odds, and match probabilities.
+              </p>
+            </div>
+          </div>
+
+          <section class="content-card matches-panel glass-panel">
+            <div class="section-heading">
+              <div>
+                <p class="section-kicker">Fixtures</p>
+                <h2>Match Predictor</h2>
+              </div>
+              <p class="subtle-copy">
+                Dynamic probabilities, recent form, and NRR controls inspired by the reference layout.
+              </p>
+            </div>
+
+            <div class="matches-grid" id="matchesGrid"></div>
+          </section>
+        </section>
+
+        <aside class="sidebar">
+          <section class="content-card glass-panel">
+            <div class="section-heading">
+              <div>
+                <p class="section-kicker">Live Table</p>
+                <h2>Predicted Standings</h2>
+              </div>
+            </div>
+
+            <div class="table-wrap">
+              <table class="standings-table">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Team</th>
+                    <th>M</th>
+                    <th>W</th>
+                    <th>L</th>
+                    <th>N/R</th>
+                    <th>PTS</th>
+                    <th>NRR</th>
+                  </tr>
+                </thead>
+                <tbody id="standingsBody"></tbody>
+              </table>
+            </div>
+          </section>
+
+          <section class="content-card odds-card glass-panel">
+            <div class="section-heading">
+              <div>
+                <p class="section-kicker">Forecast</p>
+                <h2>Live Playoff Odds</h2>
+              </div>
+              <button class="ghost-button compact-button" id="runSimulationButton" type="button">
+                Run Advanced Simulation
+              </button>
+            </div>
+
+            <p class="subtle-copy odds-summary" id="oddsSummary"></p>
+            <div class="odds-list odds-list--cards" id="oddsList"></div>
+          </section>
+        </aside>
+      </main>
+
+      <footer class="site-footer">
+        <p>A project made by Himadri</p>
+      </footer>
+    </div>
+
+    <template id="matchCardTemplate">
+      <article class="match-card glass-panel">
+        <div class="match-card__header">
+          <p class="match-meta"></p>
+          <span class="state-pill"></span>
+        </div>
+
+        <div class="match-card__teams">
+          <div class="team-lockup team-lockup--left">
+            <div class="team-icon"></div>
+            <div>
+              <h3 class="team-name"></h3>
+              <p class="team-short"></p>
+            </div>
+          </div>
+
+          <span class="versus">vs</span>
+
+          <div class="team-lockup team-lockup--right">
+            <div>
+              <h3 class="team-name"></h3>
+              <p class="team-short"></p>
+            </div>
+            <div class="team-icon"></div>
+          </div>
+        </div>
+
+        <div class="form-strip">
+          <div class="form-side">
+            <span class="form-label">Recent Form</span>
+            <div class="form-chips form-chips--left"></div>
+          </div>
+          <div class="form-side form-side--right">
+            <div class="form-chips form-chips--right"></div>
+            <span class="form-label">Recent Form</span>
+          </div>
+        </div>
+
+        <div class="probability-panel">
+          <div class="probability-head">
+            <span class="probability-value probability-value--left"></span>
+            <span class="probability-title">Win Probability</span>
+            <span class="probability-value probability-value--right"></span>
+          </div>
+          <div class="probability-bar">
+            <span class="probability-bar__home"></span>
+            <span class="probability-bar__away"></span>
+          </div>
+          <div class="impact-row">
+            <p class="impact-copy"></p>
+          </div>
+        </div>
+
+        <div class="match-card__body">
+          <p class="prediction-label">Predict Result</p>
+          <div class="prediction-buttons"></div>
+
+          <button class="score-toggle" type="button"></button>
+          <div class="score-panel hidden">
+            <div class="score-summary"></div>
+            <div class="score-columns">
+              <div class="score-team-column score-team-column--left"></div>
+              <div class="score-team-column score-team-column--right"></div>
+            </div>
+          </div>
+        </div>
+      </article>
+    </template>
+
+    <script src="./script.js"></script>
+  </body>
+</html>

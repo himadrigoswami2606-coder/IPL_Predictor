@@ -1,14 +1,14 @@
 const teams = {
-  KKR: { name: "Kolkata Knight Riders", short: "KKR", color: "linear-gradient(135deg, #4f2787, #e6c12d)", strength: 1.18, history: [], base: { played: 0, wins: 0, losses: 0, noResult: 0, points: 0, nrr: 0 } },
-  GT: { name: "Gujarat Titans", short: "GT", color: "linear-gradient(135deg, #1f284d, #d5b565)", strength: 1.05, history: [], base: { played: 0, wins: 0, losses: 0, noResult: 0, points: 0, nrr: 0 } },
-  DC: { name: "Delhi Capitals", short: "DC", color: "linear-gradient(135deg, #1265cb, #d7192d)", strength: 1.04, history: [], base: { played: 0, wins: 0, losses: 0, noResult: 0, points: 0, nrr: 0 } },
-  PBKS: { name: "Punjab Kings", short: "PBKS", color: "linear-gradient(135deg, #de1b25, #ff9973)", strength: 0.98, history: [], base: { played: 0, wins: 0, losses: 0, noResult: 0, points: 0, nrr: 0 } },
-  LSG: { name: "Lucknow Super Giants", short: "LSG", color: "linear-gradient(135deg, #0b5fff, #ff7d0d)", strength: 1, history: [], base: { played: 0, wins: 0, losses: 0, noResult: 0, points: 0, nrr: 0 } },
-  RR: { name: "Rajasthan Royals", short: "RR", color: "linear-gradient(135deg, #ff2fa0, #294fe4)", strength: 1.02, history: [], base: { played: 0, wins: 0, losses: 0, noResult: 0, points: 0, nrr: 0 } },
-  MI: { name: "Mumbai Indians", short: "MI", color: "linear-gradient(135deg, #0f4e8f, #ffc83d)", strength: 0.96, history: [], base: { played: 0, wins: 0, losses: 0, noResult: 0, points: 0, nrr: 0 } },
-  CSK: { name: "Chennai Super Kings", short: "CSK", color: "linear-gradient(135deg, #ffd213, #005baa)", strength: 0.94, history: [], base: { played: 0, wins: 0, losses: 0, noResult: 0, points: 0, nrr: 0 } },
-  SRH: { name: "Sunrisers Hyderabad", short: "SRH", color: "linear-gradient(135deg, #ff7d2d, #fdb047)", strength: 0.97, history: [], base: { played: 0, wins: 0, losses: 0, noResult: 0, points: 0, nrr: 0 } },
-  RCB: { name: "Royal Challengers Bengaluru", short: "RCB", color: "linear-gradient(135deg, #d92d2d, #ffda6d)", strength: 0.9, history: [], base: { played: 0, wins: 0, losses: 0, noResult: 0, points: 0, nrr: 0 } },
+  KKR: { name: "Kolkata Knight Riders", short: "KKR", color: "linear-gradient(135deg, #4f2787, #e6c12d)", strength: 1.18, history: [], base: { played: 0, wins: 0, losses: 0, noResult: 0, points: 0, nrr: 0, runsFor: 0, ballsFaced: 0, runsAgainst: 0, ballsBowled: 0 } },
+  GT: { name: "Gujarat Titans", short: "GT", color: "linear-gradient(135deg, #1f284d, #d5b565)", strength: 1.05, history: [], base: { played: 0, wins: 0, losses: 0, noResult: 0, points: 0, nrr: 0, runsFor: 0, ballsFaced: 0, runsAgainst: 0, ballsBowled: 0 } },
+  DC: { name: "Delhi Capitals", short: "DC", color: "linear-gradient(135deg, #1265cb, #d7192d)", strength: 1.04, history: [], base: { played: 0, wins: 0, losses: 0, noResult: 0, points: 0, nrr: 0, runsFor: 0, ballsFaced: 0, runsAgainst: 0, ballsBowled: 0 } },
+  PBKS: { name: "Punjab Kings", short: "PBKS", color: "linear-gradient(135deg, #de1b25, #ff9973)", strength: 0.98, history: [], base: { played: 0, wins: 0, losses: 0, noResult: 0, points: 0, nrr: 0, runsFor: 0, ballsFaced: 0, runsAgainst: 0, ballsBowled: 0 } },
+  LSG: { name: "Lucknow Super Giants", short: "LSG", color: "linear-gradient(135deg, #0b5fff, #ff7d0d)", strength: 1, history: [], base: { played: 0, wins: 0, losses: 0, noResult: 0, points: 0, nrr: 0, runsFor: 0, ballsFaced: 0, runsAgainst: 0, ballsBowled: 0 } },
+  RR: { name: "Rajasthan Royals", short: "RR", color: "linear-gradient(135deg, #ff2fa0, #294fe4)", strength: 1.02, history: [], base: { played: 0, wins: 0, losses: 0, noResult: 0, points: 0, nrr: 0, runsFor: 0, ballsFaced: 0, runsAgainst: 0, ballsBowled: 0 } },
+  MI: { name: "Mumbai Indians", short: "MI", color: "linear-gradient(135deg, #0f4e8f, #ffc83d)", strength: 0.96, history: [], base: { played: 0, wins: 0, losses: 0, noResult: 0, points: 0, nrr: 0, runsFor: 0, ballsFaced: 0, runsAgainst: 0, ballsBowled: 0 } },
+  CSK: { name: "Chennai Super Kings", short: "CSK", color: "linear-gradient(135deg, #ffd213, #005baa)", strength: 0.94, history: [], base: { played: 0, wins: 0, losses: 0, noResult: 0, points: 0, nrr: 0, runsFor: 0, ballsFaced: 0, runsAgainst: 0, ballsBowled: 0 } },
+  SRH: { name: "Sunrisers Hyderabad", short: "SRH", color: "linear-gradient(135deg, #ff7d2d, #fdb047)", strength: 0.97, history: [], base: { played: 0, wins: 0, losses: 0, noResult: 0, points: 0, nrr: 0, runsFor: 0, ballsFaced: 0, runsAgainst: 0, ballsBowled: 0 } },
+  RCB: { name: "Royal Challengers Bengaluru", short: "RCB", color: "linear-gradient(135deg, #d92d2d, #ffda6d)", strength: 0.9, history: [], base: { played: 0, wins: 0, losses: 0, noResult: 0, points: 0, nrr: 0, runsFor: 0, ballsFaced: 0, runsAgainst: 0, ballsBowled: 0 } },
 };
 
 const teamNameToCode = {
@@ -132,7 +132,8 @@ function clamp(value, min, max) {
 }
 
 function ballsToOvers(totalBalls) {
-  return `${Math.floor(totalBalls / 6)}.${totalBalls % 6}`;
+  const overs = totalBalls / 6;
+  return overs.toFixed(2).replace(/\.00$/, ".0").replace(/(\.\d)0$/, "$1");
 }
 
 function oversToFloat(totalBalls) {
@@ -145,14 +146,24 @@ function oversStringToBalls(value) {
     return 0;
   }
 
-  const numeric = Number(text);
-  if (Number.isNaN(numeric)) {
+  const [oversPartRaw, fractionRaw = "0"] = text.split(".");
+  const oversPart = clamp(Number(oversPartRaw) || 0, 0, 20);
+
+  if (!fractionRaw) {
+    return clamp(oversPart * 6, 0, 120);
+  }
+
+  if (fractionRaw.length === 1 && Number(fractionRaw) <= 5) {
+    return clamp(oversPart * 6 + Number(fractionRaw), 0, 120);
+  }
+
+  const decimalOvers = Number(text);
+  if (Number.isNaN(decimalOvers)) {
     return 0;
   }
 
-  const [oversPartRaw, ballsPartRaw = "0"] = text.split(".");
-  const oversPart = clamp(Number(oversPartRaw) || 0, 0, 20);
-  const ballsPart = clamp(Number(ballsPartRaw[0] ?? "0") || 0, 0, 5);
+  const fraction = decimalOvers - Math.floor(decimalOvers);
+  const ballsPart = clamp(Math.round(fraction * 6), 0, 5);
   return clamp(oversPart * 6 + ballsPart, 0, 120);
 }
 
@@ -305,34 +316,39 @@ function formScore(form) {
   }, 0);
 }
 
-function nrrImpact(match, outcome, scoreState = state.scores[match.id]) {
-  if (outcome === "NR") {
-    return 0.02;
+function effectiveBallsForNRR(score) {
+  if (score.wickets >= 10 && score.balls < 120) {
+    return 120;
   }
-
-  const home = scoreState[match.home];
-  const away = scoreState[match.away];
-  const homeRate = home.runs / oversToFloat(home.balls);
-  const awayRate = away.runs / oversToFloat(away.balls);
-  const runGap = Math.abs(home.runs - away.runs) / 18;
-  return clamp(Math.abs(homeRate - awayRate) * 0.34 + runGap * 0.02, 0.04, 1.15);
+  return clamp(score.balls, 0, 120);
 }
 
 function applyOutcome(table, match, outcome, scoreState = state.scores[match.id]) {
   const home = table[match.home];
   const away = table[match.away];
-  const delta = nrrImpact(match, outcome, scoreState);
+  const homeScore = scoreState[match.home];
+  const awayScore = scoreState[match.away];
+  const homeFacedBalls = effectiveBallsForNRR(homeScore);
+  const awayFacedBalls = effectiveBallsForNRR(awayScore);
 
   home.played += 1;
   away.played += 1;
+  home.runsFor += homeScore.runs;
+  home.ballsFaced += homeFacedBalls;
+  home.runsAgainst += awayScore.runs;
+  home.ballsBowled += awayFacedBalls;
+  away.runsFor += awayScore.runs;
+  away.ballsFaced += awayFacedBalls;
+  away.runsAgainst += homeScore.runs;
+  away.ballsBowled += homeFacedBalls;
 
   if (outcome === "NR") {
     home.noResult += 1;
     away.noResult += 1;
     home.points += 1;
     away.points += 1;
-    home.nrr += delta / 4;
-    away.nrr += delta / 4;
+    home.nrr = home.ballsFaced && home.ballsBowled ? home.runsFor / oversToFloat(home.ballsFaced) - home.runsAgainst / oversToFloat(home.ballsBowled) : 0;
+    away.nrr = away.ballsFaced && away.ballsBowled ? away.runsFor / oversToFloat(away.ballsFaced) - away.runsAgainst / oversToFloat(away.ballsBowled) : 0;
     return;
   }
 
@@ -340,15 +356,14 @@ function applyOutcome(table, match, outcome, scoreState = state.scores[match.id]
     home.wins += 1;
     home.points += 2;
     away.losses += 1;
-    home.nrr += delta;
-    away.nrr -= delta;
   } else {
     away.wins += 1;
     away.points += 2;
     home.losses += 1;
-    away.nrr += delta;
-    home.nrr -= delta;
   }
+
+  home.nrr = home.ballsFaced && home.ballsBowled ? home.runsFor / oversToFloat(home.ballsFaced) - home.runsAgainst / oversToFloat(home.ballsBowled) : 0;
+  away.nrr = away.ballsFaced && away.ballsBowled ? away.runsFor / oversToFloat(away.ballsFaced) - away.runsAgainst / oversToFloat(away.ballsBowled) : 0;
 }
 
 function buildTableFromOutcomes(selectionMap = state.selections, throughSequence = Number.POSITIVE_INFINITY) {
@@ -624,14 +639,22 @@ function getScoreSummary(match) {
   const selectedWinner = getOutcome(match);
   const scoreWinnerTeam = scoreWinner(match, scoreState);
   const winner = selectedWinner || scoreWinnerTeam;
-  const margin = Math.abs(home.runs - away.runs);
+  const winnerScore = winner === match.home ? home : away;
+  const loserScore = winner === match.home ? away : home;
   if (winner === "NR") {
     return "Projected no result. Teams split the points.";
   }
   if (selectedWinner && selectedWinner !== "NR" && selectedWinner !== scoreWinnerTeam) {
     return `Selected result favors ${teams[selectedWinner].name}. Adjust the scoreline if you want NRR to match that pick.`;
   }
-  return `${teams[winner].name} would win by ${margin} runs with this scoreline.`;
+
+  if (winnerScore.runs > loserScore.runs && winnerScore.wickets < 10 && winnerScore.balls < 120) {
+    const wicketsInHand = 10 - winnerScore.wickets;
+    const ballsRemaining = 120 - winnerScore.balls;
+    return `${teams[winner].name} would win by ${wicketsInHand} wickets with ${ballsRemaining} balls to spare.`;
+  }
+
+  return `${teams[winner].name} would win by ${Math.abs(home.runs - away.runs)} runs with this scoreline.`;
 }
 
 function renderScoreSummary(match, container) {

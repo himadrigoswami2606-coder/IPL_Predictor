@@ -1,3 +1,1 @@
-window.MATCH_RESULTS = {
-  
-}
+

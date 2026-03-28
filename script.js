@@ -245,6 +245,11 @@ const themeToggle = document.getElementById("themeToggle");
 let liveOddsCache = null;
 let liveOddsCacheKey = "";
 
+function invalidateSimulationCache() {
+  liveOddsCache = null;
+  liveOddsCacheKey = "";
+}
+
 function scoreWinner(match, override = state.scores[match.id]) {
   const homeRuns = override[match.home].runs;
   const awayRuns = override[match.away].runs;
@@ -688,6 +693,7 @@ function updateScoreField(matchId, teamCode, field, rawValue) {
     score.wickets = parsed.wickets;
   }
   if (field === "overs") score.balls = oversStringToBalls(rawValue);
+  invalidateSimulationCache();
   renderAll();
 }
 
@@ -768,6 +774,7 @@ function renderMatches() {
         }
         button.addEventListener("click", () => {
           state.selections[match.id] = state.selections[match.id] === option ? null : option;
+          invalidateSimulationCache();
           renderAll();
         });
         predictionButtons.appendChild(button);
@@ -816,8 +823,6 @@ function renderSectionView() {
 }
 
 function renderAll() {
-  liveOddsCache = null;
-  liveOddsCacheKey = "";
   renderTheme();
   renderSectionView();
   renderMatches();
@@ -855,6 +860,7 @@ document.getElementById("simulateButton").addEventListener("click", () => {
       state.selections[match.id] = "NR";
     }
   });
+  invalidateSimulationCache();
   renderAll();
 });
 
@@ -863,6 +869,7 @@ document.getElementById("resetButton").addEventListener("click", () => {
     state.selections[match.id] = null;
     state.expandedScores[match.id] = false;
   });
+  invalidateSimulationCache();
   renderAll();
 });
 
@@ -873,6 +880,7 @@ themeToggle.addEventListener("click", () => {
 
 document.getElementById("runSimulationButton").addEventListener("click", () => {
   predictionStatus.textContent = "Advanced simulation refreshed from the current picks and score inputs.";
+  invalidateSimulationCache();
   renderAll();
 });
 

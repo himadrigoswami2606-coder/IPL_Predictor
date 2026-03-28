@@ -315,6 +315,14 @@ body[data-section="playoffs"] .sidebar > :not(.odds-card) {
   display: none;
 }
 
+body[data-section="playoffs"] .odds-card {
+  width: 100%;
+}
+
+body[data-section="playoffs"] .odds-list--cards {
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+
 .workspace {
   display: grid;
   grid-template-columns: minmax(0, 1.55fr) minmax(320px, 0.95fr);

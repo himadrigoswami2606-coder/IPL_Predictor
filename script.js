@@ -173,6 +173,56 @@ function parseScoreString(rawValue) {
   };
 }
 
+function normalizeTeamScore(rawTeamScore, fallbackScore) {
+  if (!rawTeamScore) {
+    return { ...fallbackScore };
+  }
+
+  if (typeof rawTeamScore.score === "string") {
+    const parsedScore = parseScoreString(rawTeamScore.score);
+    return {
+      runs: parsedScore.runs,
+      wickets: parsedScore.wickets,
+      balls:
+        rawTeamScore.overs !== undefined
+          ? oversStringToBalls(rawTeamScore.overs)
+          : clamp(Number(rawTeamScore.balls) || fallbackScore.balls, 0, 120),
+    };
+  }
+
+  return {
+    runs: clamp(Number(rawTeamScore.runs) || 0, 0, 300),
+    wickets: clamp(Number(rawTeamScore.wickets) || 0, 0, 10),
+    balls:
+      rawTeamScore.overs !== undefined
+        ? oversStringToBalls(rawTeamScore.overs)
+        : clamp(Number(rawTeamScore.balls) || fallbackScore.balls, 0, 120),
+  };
+}
+
+function applyExternalResults() {
+  const resultMap = window.MATCH_RESULTS ?? {};
+
+  matches.forEach((match) => {
+    const savedResult = resultMap[match.id];
+    if (!savedResult) {
+      return;
+    }
+
+    const scoreboard = {
+      [match.home]: normalizeTeamScore(savedResult.scoreboard?.[match.home], match.scoreboard[match.home]),
+      [match.away]: normalizeTeamScore(savedResult.scoreboard?.[match.away], match.scoreboard[match.away]),
+    };
+
+    match.scoreboard = scoreboard;
+    match.type = "completed";
+    match.completedWinner = savedResult.completedWinner ?? scoreWinner(match, scoreboard);
+    match.predicted = match.completedWinner;
+  });
+}
+
+applyExternalResults();
+
 const upcomingMatches = matches.filter((match) => match.type === "upcoming");
 
 const state = {
@@ -602,6 +652,7 @@ function renderScoreSummary(match, container) {
 
 function renderScoreControls(match, container, teamCode) {
   const score = state.scores[match.id][teamCode];
+  const isLocked = match.type === "completed";
   const controlMarkup = [
     ["score", "Score", scoreString(score.runs, score.wickets), "text", "150/7", "score-control--wide"],
     ["overs", "Overs", ballsToOvers(score.balls), "text", "18.3", "score-control--overs"],
@@ -609,7 +660,7 @@ function renderScoreControls(match, container, teamCode) {
     .map(([field, label, value, inputMode, placeholder, extraClass]) => `
       <div class="score-control ${extraClass}">
         <label>${label}</label>
-        <input class="score-input" data-match-id="${match.id}" data-team="${teamCode}" data-field="${field}" type="${inputMode}" value="${value}" placeholder="${placeholder}" />
+        <input class="score-input" data-match-id="${match.id}" data-team="${teamCode}" data-field="${field}" type="${inputMode}" value="${value}" placeholder="${placeholder}" ${isLocked ? "disabled" : ""} />
       </div>
     `)
     .join("");
@@ -624,6 +675,11 @@ function renderScoreControls(match, container, teamCode) {
 }
 
 function updateScoreField(matchId, teamCode, field, rawValue) {
+  const match = matches.find((item) => item.id === matchId);
+  if (match?.type === "completed") {
+    return;
+  }
+
   const score = state.scores[matchId][teamCode];
   if (field === "score") {
     const parsed = parseScoreString(rawValue);
@@ -717,13 +773,19 @@ function renderMatches() {
       });
     }
 
-    scoreToggle.textContent = state.expandedScores[match.id] ? "Hide Scores" : "Set Scores (For NRR)";
-    scoreToggle.addEventListener("click", () => {
-      state.expandedScores[match.id] = !state.expandedScores[match.id];
-      renderAll();
-    });
+    if (match.type === "completed") {
+      scoreToggle.textContent = "Official Scorecard";
+      scoreToggle.disabled = true;
+      scorePanel.classList.remove("hidden");
+    } else {
+      scoreToggle.textContent = state.expandedScores[match.id] ? "Hide Scores" : "Set Scores (For NRR)";
+      scoreToggle.addEventListener("click", () => {
+        state.expandedScores[match.id] = !state.expandedScores[match.id];
+        renderAll();
+      });
+      scorePanel.classList.toggle("hidden", !state.expandedScores[match.id]);
+    }
 
-    scorePanel.classList.toggle("hidden", !state.expandedScores[match.id]);
     renderScoreSummary(match, scoreSummary);
     renderScoreControls(match, scoreColumns[0], match.home);
     renderScoreControls(match, scoreColumns[1], match.away);

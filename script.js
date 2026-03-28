@@ -228,6 +228,7 @@ const upcomingMatches = matches.filter((match) => match.type === "upcoming");
 const state = {
   filter: "upcoming",
   theme: "dark",
+  section: "league",
   selections: Object.fromEntries(upcomingMatches.map((match) => [match.id, null])),
   expandedScores: Object.fromEntries(matches.map((match) => [match.id, false])),
   scores: Object.fromEntries(matches.map((match) => [match.id, { [match.home]: { ...match.scoreboard[match.home] }, [match.away]: { ...match.scoreboard[match.away] } }])),
@@ -807,10 +808,18 @@ function renderTheme() {
   themeToggle.innerHTML = `<span class="theme-toggle__icon" aria-hidden="true">${state.theme === "dark" ? "&#9728;" : "&#9790;"}</span>`;
 }
 
+function renderSectionView() {
+  document.body.dataset.section = state.section;
+  document.querySelectorAll(".stage-tab").forEach((button) => {
+    button.classList.toggle("stage-tab--active", button.dataset.view === state.section);
+  });
+}
+
 function renderAll() {
   liveOddsCache = null;
   liveOddsCacheKey = "";
   renderTheme();
+  renderSectionView();
   renderMatches();
   renderStandings();
   renderOdds();
@@ -823,6 +832,13 @@ function renderAll() {
 document.querySelectorAll(".segment").forEach((button) => {
   button.addEventListener("click", () => {
     state.filter = button.dataset.filter;
+    renderAll();
+  });
+});
+
+document.querySelectorAll(".stage-tab").forEach((button) => {
+  button.addEventListener("click", () => {
+    state.section = button.dataset.view;
     renderAll();
   });
 });

@@ -253,8 +253,10 @@ const predictionStatus = document.getElementById("predictionStatus");
 const topPredictionStatus = document.getElementById("topPredictionStatus");
 const matchCardTemplate = document.getElementById("matchCardTemplate");
 const themeToggle = document.getElementById("themeToggle");
+const installButton = document.getElementById("installButton");
 let liveOddsCache = null;
 let liveOddsCacheKey = "";
+let deferredInstallPrompt = null;
 
 function invalidateSimulationCache() {
   liveOddsCache = null;
@@ -838,6 +840,18 @@ function renderTheme() {
   themeToggle.innerHTML = `<span class="theme-toggle__icon" aria-hidden="true">${state.theme === "dark" ? "&#9728;" : "&#9790;"}</span>`;
 }
 
+function isStandaloneMode() {
+  return window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone === true;
+}
+
+function renderInstallButton() {
+  if (!installButton) {
+    return;
+  }
+  const shouldShow = Boolean(deferredInstallPrompt) && !isStandaloneMode();
+  installButton.classList.toggle("hidden", !shouldShow);
+}
+
 function renderSectionView() {
   document.body.dataset.section = state.section;
   document.querySelectorAll(".stage-tab").forEach((button) => {
@@ -848,6 +862,7 @@ function renderSectionView() {
 function renderAll() {
   renderTheme();
   renderSectionView();
+  renderInstallButton();
   renderMatches();
   renderStandings();
   renderOdds();
@@ -906,5 +921,33 @@ document.getElementById("runSimulationButton").addEventListener("click", () => {
   invalidateSimulationCache();
   renderAll();
 });
+
+window.addEventListener("beforeinstallprompt", (event) => {
+  event.preventDefault();
+  deferredInstallPrompt = event;
+  renderInstallButton();
+});
+
+window.addEventListener("appinstalled", () => {
+  deferredInstallPrompt = null;
+  renderInstallButton();
+});
+
+if (installButton) {
+  installButton.addEventListener("click", async () => {
+    if (!deferredInstallPrompt) {
+      return;
+    }
+
+    deferredInstallPrompt.prompt();
+    try {
+      await deferredInstallPrompt.userChoice;
+    } catch (_) {
+      // ignore
+    }
+    deferredInstallPrompt = null;
+    renderInstallButton();
+  });
+}
 
 renderAll();

@@ -4,6 +4,14 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>IPLPredictor</title>
+    <meta name="theme-color" content="#0c0d11" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="IPLPredictor" />
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+    <link rel="apple-touch-icon" href="./icon-192.svg" />
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body data-theme="dark">
@@ -30,6 +38,7 @@
 
         <div class="header-actions">
           <span class="status-pill" id="topPredictionStatus">0/10 matches predicted</span>
+          <button class="ghost-button install-button hidden" id="installButton" type="button">Install App</button>
           <button class="ghost-button theme-toggle" id="themeToggle" type="button" aria-label="Toggle theme">
             <span class="theme-toggle__icon" aria-hidden="true">&#9728;</span>
           </button>
@@ -198,5 +207,12 @@
 
     <script src="./results.js"></script>
     <script src="./script.js"></script>
+    <script>
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
+          navigator.serviceWorker.register("./sw.js").catch(() => {});
+        });
+      }
+    </script>
   </body>
 </html>

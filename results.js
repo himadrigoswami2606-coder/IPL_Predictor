@@ -13,4 +13,11 @@ window.MATCH_RESULTS = {
       KKR: { score: "220/4", overs: "20.0" },
     },
   },
+m3: {
+    completedWinner: "RR",
+    scoreboard: {
+      CSK: { score: "127/10", overs: "20.0" },
+      RR: { score: "128/2", overs: "12.1" },
+    },
+  },
 }

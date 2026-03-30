@@ -1,0 +1,51 @@
+# 🏏 IPL Match Predictor
+
+A web-based application that predicts IPL match outcomes based on match conditions like runs, overs, and wickets.
+
+## 🚀 Live Demo
+👉 https://himadrigoswami2606-coder.github.io/IPL_Predictor/
+
+---
+
+## 📊 Features
+- Predict match outcome based on match inputs
+- Interactive user interface
+- Real-time prediction logic
+- Fast and responsive design
+
+---
+
+## 🛠️ Tech Stack
+- HTML
+- CSS
+- JavaScript
+- GitHub Pages (Deployment)
+
+---
+
+## 🧠 How It Works
+The application takes match inputs such as:
+- Runs scored
+- Overs completed
+- Wickets lost
+
+Based on these inputs, it applies logical conditions to estimate the probability of winning.
+
+---
+
+## 📸 Screenshots
+(Add screenshots here later)
+
+---
+
+## 🎯 Future Improvements
+- Add Machine Learning model for prediction
+- Use real IPL dataset
+- Improve accuracy and UI
+
+---
+
+## 👨‍💻 Author
+Himadri Goswami  
+- LinkedIn: https://www.linkedin.com/in/himadri-goswami-133ba528b/  
+- GitHub: https://github.com/himadrigoswami2606-coder

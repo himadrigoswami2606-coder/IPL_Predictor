@@ -13,6 +13,7 @@ const teams = {
 
 const teamNameToCode = {
   "Royal Challengers Bengaluru": "RCB",
+  "Royal Challengers Bangalore": "RCB",
   "Sunrisers Hyderabad": "SRH",
   "Mumbai Indians": "MI",
   "Kolkata Knight Riders": "KKR",
@@ -20,9 +21,41 @@ const teamNameToCode = {
   "Chennai Super Kings": "CSK",
   "Punjab Kings": "PBKS",
   "Gujarat Titans": "GT",
+  "Gujrat Titans": "GT",
   "Lucknow Super Giants": "LSG",
   "Delhi Capitals": "DC",
 };
+
+function normalizeTeamKey(value) {
+  return String(value ?? "")
+    .toLowerCase()
+    .replace(/[^a-z]/g, "");
+}
+
+const normalizedTeamNameToCode = Object.fromEntries(
+  Object.entries({
+    ...teamNameToCode,
+    KKR: "KKR",
+    GT: "GT",
+    DC: "DC",
+    PBKS: "PBKS",
+    LSG: "LSG",
+    RR: "RR",
+    MI: "MI",
+    CSK: "CSK",
+    SRH: "SRH",
+    RCB: "RCB",
+  }).map(([name, code]) => [normalizeTeamKey(name), code])
+);
+
+function resolveTeamCode(teamName) {
+  const directMatch = teamNameToCode[teamName];
+  if (directMatch) {
+    return directMatch;
+  }
+
+  return normalizedTeamNameToCode[normalizeTeamKey(teamName)] ?? null;
+}
 
 function defaultScoreboard(home, away) {
   return {
@@ -32,8 +65,14 @@ function defaultScoreboard(home, away) {
 }
 
 function scheduleMatch(number, date, day, start, homeName, awayName, venue) {
-  const home = teamNameToCode[homeName];
-  const away = teamNameToCode[awayName];
+  const home = resolveTeamCode(homeName);
+  const away = resolveTeamCode(awayName);
+
+  if (!home || !away) {
+    console.warn(`Skipping match #${number}. Unknown team name in fixture:`, { homeName, awayName });
+    return null;
+  }
+
   return {
     id: `m${number}`,
     sequence: number,
@@ -78,7 +117,7 @@ const matches = [
   scheduleMatch(25, "17 Apr 2026", "Fri", "7:30 PM", "Gujarat Titans", "Kolkata Knight Riders", "Ahmedabad"),
   scheduleMatch(26, "18 Apr 2026", "Sat", "3:30 PM", "Royal Challengers Bengaluru", "Delhi Capitals", "Bengaluru"),
   scheduleMatch(27, "18 Apr 2026", "Sat", "7:30 PM", "Sunrisers Hyderabad", "Chennai Super Kings", "Hyderabad"),
-  scheduleMatch(28, "19 Apr 2026", "Sun", "3:30 PM", "Kolkata Knight Riders", "Punjab Kings", "Kolkata"),
+  scheduleMatch(28, "19 Apr 2026", "Sun", "3:30 PM", "Rajasthan Royals", "Punjab Kings", "Kolkata"),
   scheduleMatch(29, "19 Apr 2026", "Sun", "7:30 PM", "Punjab Kings", "Lucknow Super Giants", "New Chandigarh"),
   scheduleMatch(30, "20 Apr 2026", "Mon", "7:30 PM", "Gujarat Titans", "Mumbai Indians", "Ahmedabad"),
   scheduleMatch(31, "21 Apr 2026", "Tue", "7:30 PM", "Sunrisers Hyderabad", "Delhi Capitals", "Hyderabad"),
@@ -87,7 +126,7 @@ const matches = [
   scheduleMatch(34, "24 Apr 2026", "Fri", "7:30 PM", "Royal Challengers Bengaluru", "Gujarat Titans", "Bengaluru"),
   scheduleMatch(35, "25 Apr 2026", "Sat", "3:30 PM", "Delhi Capitals", "Punjab Kings", "Delhi"),
   scheduleMatch(36, "25 Apr 2026", "Sat", "7:30 PM", "Rajasthan Royals", "Sunrisers Hyderabad", "Jaipur"),
-  scheduleMatch(37, "26 Apr 2026", "Sun", "3:30 PM", "Gujrat Titans", "Chennai Super Kings", "Ahmedabad"),
+  scheduleMatch(37, "26 Apr 2026", "Sun", "3:30 PM", "Rajasthan Royals", "Chennai Super Kings", "Ahmedabad"),
   scheduleMatch(38, "26 Apr 2026", "Sun", "7:30 PM", "Lucknow Super Giants", "Kolkata Knight Riders", "Lucknow"),
   scheduleMatch(39, "27 Apr 2026", "Mon", "7:30 PM", "Delhi Capitals", "Royal Challengers Bengaluru", "Delhi"),
   scheduleMatch(40, "28 Apr 2026", "Tue", "7:30 PM", "Punjab Kings", "Rajasthan Royals", "New Chandigarh"),
@@ -121,7 +160,7 @@ const matches = [
   scheduleMatch(68, "23 May 2026", "Sat", "7:30 PM", "Lucknow Super Giants", "Punjab Kings", "Lucknow"),
   scheduleMatch(69, "24 May 2026", "Sun", "3:30 PM", "Mumbai Indians", "Rajasthan Royals", "Mumbai"),
   scheduleMatch(70, "24 May 2026", "Sun", "7:30 PM", "Kolkata Knight Riders", "Delhi Capitals", "Kolkata"),
-];
+].filter(Boolean);
 
 function cloneBaseTable() {
   return Object.fromEntries(Object.entries(teams).map(([code, profile]) => [code, { ...profile.base }]));

@@ -126,7 +126,7 @@ const matches = [
   scheduleMatch(34, "24 Apr 2026", "Fri", "7:30 PM", "Royal Challengers Bengaluru", "Gujarat Titans", "Bengaluru"),
   scheduleMatch(35, "25 Apr 2026", "Sat", "3:30 PM", "Delhi Capitals", "Punjab Kings", "Delhi"),
   scheduleMatch(36, "25 Apr 2026", "Sat", "7:30 PM", "Rajasthan Royals", "Sunrisers Hyderabad", "Jaipur"),
-  scheduleMatch(37, "26 Apr 2026", "Sun", "3:30 PM", "Rajasthan Royals", "Chennai Super Kings", "Ahmedabad"),
+  scheduleMatch(37, "26 Apr 2026", "Sun", "3:30 PM", "Gujarat Titans", "Chennai Super Kings", "Ahmedabad"),
   scheduleMatch(38, "26 Apr 2026", "Sun", "7:30 PM", "Lucknow Super Giants", "Kolkata Knight Riders", "Lucknow"),
   scheduleMatch(39, "27 Apr 2026", "Mon", "7:30 PM", "Delhi Capitals", "Royal Challengers Bengaluru", "Delhi"),
   scheduleMatch(40, "28 Apr 2026", "Tue", "7:30 PM", "Punjab Kings", "Rajasthan Royals", "New Chandigarh"),

@@ -20,4 +20,11 @@ m3: {
       RR: { score: "128/2", overs: "12.1" },
     },
   },
+  m4: {
+    completedWinner: "PBKS",
+    scoreboard: {
+      GT: { score: "162/6", overs: "20.0" },
+      PBKS: { score: "165/7", overs: "19.1" },
+    },
+  },
 }

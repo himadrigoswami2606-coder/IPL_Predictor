@@ -27,4 +27,11 @@ m3: {
       PBKS: { score: "165/7", overs: "19.1" },
     },
   },
+m5: {
+    completedWinner: "DC",
+    scoreboard: {
+      DC: { score: "145/4", overs: "17.1" },
+      LSG: { score: "141/10", overs: "20.0" },
+    },
+  },
 }

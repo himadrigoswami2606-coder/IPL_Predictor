@@ -34,4 +34,11 @@ m5: {
       LSG: { score: "141/10", overs: "20.0" },
     },
   },
+m6: {
+    completedWinner: "SRH",
+    scoreboard: {
+      SRH: { score: "226/8", overs: "20.0" },
+      KKR: { score: "161/10", overs: "20.0" },
+    },
+  },
 }

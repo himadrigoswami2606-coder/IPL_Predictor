@@ -41,4 +41,18 @@ m6: {
       KKR: { score: "161/10", overs: "20.0" },
     },
   },
+  m7: {
+    completedWinner: "PBKS",
+    scoreboard: {
+      CSK: { score: "209/5", overs: "20.0" },
+      PBKS: { score: "210/5", overs: "18.4" },
+    },
+  },
+  m8: {
+    completedWinner: "DC",
+    scoreboard: {
+      MI: { score: "162/6", overs: "20.0" },
+      DC: { score: "164/4", overs: "18.1" },
+    },
+  },
 }

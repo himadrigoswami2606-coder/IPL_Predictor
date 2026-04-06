@@ -55,4 +55,25 @@ m6: {
       DC: { score: "164/4", overs: "18.1" },
     },
   },
+m9: {
+    completedWinner: "RR",
+    scoreboard: {
+      RR: { score: "210/6", overs: "20.0" },
+      GT: { score: "204/8", overs: "20.0" },
+    },
+  },
+m10: {
+    completedWinner: "LSG",
+    scoreboard: {
+      SRH: { score: "156/9", overs: "20.0" },
+      LSG: { score: "160/5", overs: "19.5" },
+    },
+  },
+m11: {
+    completedWinner: "RCB",
+    scoreboard: {
+      RCB: { score: "250/3", overs: "20.0" },
+      CSK: { score: "207/10", overs: "20.0" },
+    },
+  },
 }

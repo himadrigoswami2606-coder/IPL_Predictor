@@ -146,4 +146,11 @@ m21: {
       RR: { score: "159/10", overs: "20.0" },
     },
   },  
+m22: {
+    completedWinner: "CSK",
+    scoreboard: {
+      CSK: { score: "192/5", overs: "20.0" },
+      KKR: { score: "160/7", overs: "20.0" },
+    },
+  },    
 }

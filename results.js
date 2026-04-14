@@ -76,4 +76,74 @@ m11: {
       CSK: { score: "207/10", overs: "20.0" },
     },
   },
+m12: {
+    completedWinner: "NR",
+    scoreboard: {
+      KKR: { score: "0/0", overs: "0.0" },
+      PBKS: { score: "0/0", overs: "0.0" },
+    },
+  },
+m13: {
+    completedWinner: "RR",
+    scoreboard: {
+      RR: { score: "150/3", overs: "11.0" },
+      MI: { score: "123/9", overs: "11.0" },
+    },
+  },
+m14: {
+    completedWinner: "GT",
+    scoreboard: {
+      GT: { score: "210/4", overs: "20.0" },
+      DC: { score: "209/8", overs: "20.0" },
+    },
+  },
+m15: {
+    completedWinner: "LSG",
+    scoreboard: {
+      KKR: { score: "181/4", overs: "20.0" },
+      LSG: { score: "182/7", overs: "20.0" },
+    },
+  },
+m16: {
+    completedWinner: "RR",
+    scoreboard: {
+      RCB: { score: "201/8", overs: "20.0" },
+      RR: { score: "202/4", overs: "18.0" },
+    },
+  },
+m17: {
+    completedWinner: "PBKS",
+    scoreboard: {
+      SRH: { score: "219/6", overs: "20.0" },
+      PBKS: { score: "223/4", overs: "18.5" },
+    },
+  },
+m18: {
+    completedWinner: "CSK",
+    scoreboard: {
+      CSK: { score: "212/2", overs: "20.0" },
+      DC: { score: "189/10", overs: "20.0" },
+    },
+  },  
+m19: {
+    completedWinner: "GT",
+    scoreboard: {
+      LSG: { score: "164/8", overs: "20.0" },
+      GT: { score: "165/3", overs: "18.4" },
+    },
+  },
+m20: {
+    completedWinner: "RCB",
+    scoreboard: {
+      RCB: { score: "240/4", overs: "20.0" },
+      MI: { score: "222/5", overs: "20.0" },
+    },
+  },
+m21: {
+    completedWinner: "SRH",
+    scoreboard: {
+      SRH: { score: "216/6", overs: "20.0" },
+      RR: { score: "159/10", overs: "20.0" },
+    },
+  },  
 }

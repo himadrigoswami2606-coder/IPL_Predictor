@@ -117,7 +117,7 @@ const matches = [
   scheduleMatch(25, "17 Apr 2026", "Fri", "7:30 PM", "Gujarat Titans", "Kolkata Knight Riders", "Ahmedabad"),
   scheduleMatch(26, "18 Apr 2026", "Sat", "3:30 PM", "Royal Challengers Bengaluru", "Delhi Capitals", "Bengaluru"),
   scheduleMatch(27, "18 Apr 2026", "Sat", "7:30 PM", "Sunrisers Hyderabad", "Chennai Super Kings", "Hyderabad"),
-  scheduleMatch(28, "19 Apr 2026", "Sun", "3:30 PM", "Kolkata Knight Riders", "Rajasthan Royals", "Kolkata"),
+  scheduleMatch(28, "19 Apr 2026", "Sun", "3:30 PM", "Rajasthan Royals", "Punjab Kings", "Kolkata"),
   scheduleMatch(29, "19 Apr 2026", "Sun", "7:30 PM", "Punjab Kings", "Lucknow Super Giants", "New Chandigarh"),
   scheduleMatch(30, "20 Apr 2026", "Mon", "7:30 PM", "Gujarat Titans", "Mumbai Indians", "Ahmedabad"),
   scheduleMatch(31, "21 Apr 2026", "Tue", "7:30 PM", "Sunrisers Hyderabad", "Delhi Capitals", "Hyderabad"),
@@ -126,7 +126,7 @@ const matches = [
   scheduleMatch(34, "24 Apr 2026", "Fri", "7:30 PM", "Royal Challengers Bengaluru", "Gujarat Titans", "Bengaluru"),
   scheduleMatch(35, "25 Apr 2026", "Sat", "3:30 PM", "Delhi Capitals", "Punjab Kings", "Delhi"),
   scheduleMatch(36, "25 Apr 2026", "Sat", "7:30 PM", "Rajasthan Royals", "Sunrisers Hyderabad", "Jaipur"),
-  scheduleMatch(37, "26 Apr 2026", "Sun", "3:30 PM", "Gujarat Titans", "Chennai Super Kings", "Ahmedabad"),
+  scheduleMatch(37, "26 Apr 2026", "Sun", "3:30 PM", "Rajasthan Royals", "Chennai Super Kings", "Ahmedabad"),
   scheduleMatch(38, "26 Apr 2026", "Sun", "7:30 PM", "Lucknow Super Giants", "Kolkata Knight Riders", "Lucknow"),
   scheduleMatch(39, "27 Apr 2026", "Mon", "7:30 PM", "Delhi Capitals", "Royal Challengers Bengaluru", "Delhi"),
   scheduleMatch(40, "28 Apr 2026", "Tue", "7:30 PM", "Punjab Kings", "Rajasthan Royals", "New Chandigarh"),
@@ -455,16 +455,24 @@ function getWinProbabilities(match) {
   const nrrEdge = (tableBefore[match.home].nrr - tableBefore[match.away].nrr) * 0.04;
   const formEdge = (formScore(homeForm) - formScore(awayForm)) * 0.045;
   const homeProbability = clamp(0.5 + strengthEdge + pointsEdge + rankEdge + nrrEdge + formEdge + 0.035, 0.24, 0.76);
+  const formGap = Math.abs(formScore(homeForm) - formScore(awayForm));
+  const nrrGap = Math.abs(tableBefore[match.home].nrr - tableBefore[match.away].nrr);
+  const rankGap = Math.abs(homeRank - awayRank);
+  const ppmGap = Math.abs(homePointsPerMatch - awayPointsPerMatch);
 
   return {
     home: Number((homeProbability * 100).toFixed(0)),
     away: Number(((1 - homeProbability) * 100).toFixed(0)),
     impact:
-      Math.abs(homeRank - awayRank) <= 2
-        ? "Massive top-four swing"
-        : Math.abs(homePointsPerMatch - awayPointsPerMatch) >= 0.5
-          ? "Form and table edge matter here"
-          : "Useful NRR leverage",
+      ppmGap >= 0.6
+        ? "Table form strongly favors one side"
+        : formGap >= 1.35
+          ? "Recent form is driving this matchup"
+          : nrrGap >= 0.75
+            ? "NRR profile separates the sides"
+            : rankGap <= 2
+              ? "Direct table-shape matchup"
+              : "Fine margins with playoff pressure",
   };
 }
 
@@ -598,28 +606,67 @@ function renderStandings() {
     .join("");
 }
 
-function buildOddsNote(entry, standingsMap) {
+function buildOddsNote(entry, standingsMap, standings) {
   const pickedCount = Object.values(state.selections).filter(Boolean).length;
-  const currentPoints = standingsMap[entry.code].points;
-  const currentPlayed = standingsMap[entry.code].played;
+  const teamStanding = standingsMap[entry.code];
+  const currentPoints = teamStanding.points;
+  const currentPlayed = teamStanding.played;
   const remainingGames = Math.max(0, 14 - currentPlayed);
-  const winsToThreshold = Math.max(0, Math.ceil((14 - currentPoints) / 2));
-  let nrrText = "NRR could break tied scenarios.";
-  if (entry.top4 >= 70) {
-    nrrText = "Current NRR cushion is already doing useful work.";
-  } else if (entry.top4 <= 25) {
-    nrrText = "Will likely need wins plus a visible NRR swing.";
+  const winsTo14 = Math.max(0, Math.ceil((14 - currentPoints) / 2));
+  const winsTo16 = Math.max(0, Math.ceil((16 - currentPoints) / 2));
+  const fourthPlace = standings[Math.min(3, standings.length - 1)];
+  const sixthPlace = standings[Math.min(5, standings.length - 1)];
+  const nrrRank = standings
+    .slice()
+    .sort((left, right) => right.nrr - left.nrr)
+    .findIndex((item) => item.code === entry.code) + 1;
+  const cutoffNRR = fourthPlace?.nrr ?? 0;
+
+  let winsText = `${winsTo14} of ${remainingGames} wins needed to reach 14 points`;
+  if (currentPoints >= 16) {
+    winsText = entry.top4 >= 88 ? "16 points on board. Qualification is close to locked." : "16 points on board, but final placing still depends on other results.";
+  } else if (currentPoints >= 14) {
+    winsText = entry.top4 >= 80 ? "14 points reached. One more win would almost lock qualification." : "14 points reached, but qualification still depends on NRR and other results.";
+  } else if (remainingGames === 0) {
+    winsText = currentPoints >= 14 ? "Season complete. Waiting on NRR and other results." : "Season complete. They now need heavy external help.";
+  } else if (entry.top4 >= 70) {
+    winsText = `${winsTo14} of ${remainingGames} wins likely keep them above the cut line`;
+  } else if (entry.top4 <= 35) {
+    winsText = `${Math.min(remainingGames, Math.max(winsTo14, winsTo16))} of ${remainingGames} wins may be needed to feel safe`;
+  }
+
+  let nrrText = "NRR could decide tight qualification ties.";
+  if (nrrRank === 1) {
+    nrrText = "Best NRR in the league right now.";
+  } else if (nrrRank <= 3 && teamStanding.nrr > 0.4) {
+    nrrText = "Current NRR is one of the strongest cushions in the table.";
+  } else if (nrrRank >= 9) {
+    nrrText = "Among the weakest NRR profiles; they need a visible boost.";
+  } else if (teamStanding.rank > 4 && currentPoints >= fourthPlace.points - 2 && teamStanding.nrr < cutoffNRR) {
+    nrrText = "Close on points, but NRR still needs work against the top-four line.";
+  } else if (teamStanding.rank <= 4 && sixthPlace && teamStanding.nrr > sixthPlace.nrr + 0.35) {
+    nrrText = "Current NRR is doing useful work compared with the chasing pack.";
+  } else if (teamStanding.nrr < 0) {
+    nrrText = "Negative NRR leaves little margin if qualification comes down to ties.";
+  }
+
+  let summary = "Projection still has plenty of movement left.";
+  if (pickedCount === 0) {
+    summary = "The qualification picture is still wide open.";
+  } else if (teamStanding.rank <= 2 && entry.top4 >= 75) {
+    summary = "They are tracking like a top-four side with some breathing room.";
+  } else if (teamStanding.rank <= 4) {
+    summary = "They are currently above the projected cut line, but not clear of pressure.";
+  } else if (teamStanding.rank === 5 || teamStanding.rank === 6) {
+    summary = "They are within touching distance of the cut line and every result matters.";
+  } else if (entry.top4 <= 20) {
+    summary = "They need a major swing in results to get back into the race.";
   }
 
   return {
-    winsText: `${winsToThreshold} of ${remainingGames} wins needed for 14 points`,
+    winsText,
     nrrText,
-    summary:
-      pickedCount === 0
-        ? `${teams[entry.code].name} start level on points before the season begins.`
-        : standingsMap[entry.code].rank <= 4
-          ? `${teams[entry.code].name} are currently in a qualifying slot.`
-          : `${teams[entry.code].name} are chasing the current top-four cut line.`,
+    summary,
   };
 }
 
@@ -638,7 +685,7 @@ function renderOdds() {
     .map((entry) => {
       const baseline = baselineOdds.find((item) => item.code === entry.code);
       const delta = entry.top4 - baseline.top4;
-      const note = buildOddsNote(entry, standingsMap);
+      const note = buildOddsNote(entry, standingsMap, standings);
 
       return `
         <article class="odds-card-item">
